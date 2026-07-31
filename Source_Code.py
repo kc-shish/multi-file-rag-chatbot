@@ -151,7 +151,7 @@ def generate_answer(query):
     global vector_store, llm
 
     # Make sure components exist
-    initialise_componets()
+    initialise_components()
 
     if vector_store is None:
         raise RuntimeError("Please process documents first.")
