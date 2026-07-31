@@ -4,7 +4,12 @@
 # In[23]:
 
 
-from langchain_community.document_loaders import DirectoryLoader, PyMuPDFLoader,TextLoader, BSHTMLLoader, UnstructuredPowerPointLoader, Docx2txtLoader
+from langchain_community.document_loaders import (
+    PyMuPDFLoader,
+    TextLoader,
+    UnstructuredPowerPointLoader,
+    Docx2txtLoader,
+)
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_chroma import Chroma
 from langchain_groq import ChatGroq
