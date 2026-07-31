@@ -10,3 +10,7 @@ python-dotenv
 pymupdf
 docx2txt
 unstructured[pptx]
+
+sentence-transformers
+torch
+transformers
