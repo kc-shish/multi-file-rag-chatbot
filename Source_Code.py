@@ -20,6 +20,7 @@ from uuid import uuid4
 from langchain_classic.chains.qa_with_sources.retrieval import RetrievalQAWithSourcesChain
 import tempfile
 import os
+import streamlit as st
 
 
 
@@ -40,30 +41,21 @@ load_dotenv()
 llm =None
 vector_store = None
 
-def initialise_componets():
+def initialise_components():
+
     global llm, vector_store
-
-    # ---------------- GROQ API KEY ----------------
-    groq_api_key = (
-        st.secrets.get("GROQ_API_KEY", None)
-        if hasattr(st, "secrets")
-        else None
-    ) or os.getenv("GROQ_API_KEY")
-
-    if not groq_api_key:
-        raise ValueError(
-            "GROQ_API_KEY not found. Add it to .env locally or Streamlit Secrets."
-        )
-
+    
     # ---------------- LLM ----------------
     if llm is None:
-        llm = ChatGroq(
-            api_key=groq_api_key,
-            model="llama-3.3-70b-versatile",
-            temperature=0.3,
-            max_tokens=500,
-        )
 
+        groq_key = st.secrets["GROQ_API_KEY"]
+
+        llm = ChatGroq(
+            model="llama-3.3-70b-versatile",
+            temperature=0.9,
+            max_tokens=500,
+            api_key=groq_key
+        )
     # ---------------- VECTOR STORE ----------------
     if vector_store is None:
         ef = HuggingFaceEmbeddings(
