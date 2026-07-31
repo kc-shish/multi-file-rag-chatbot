@@ -43,22 +43,40 @@ vector_store = None
 def initialise_componets():
     global llm, vector_store
 
-    if llm is None:
-        llm = ChatGroq(model ="llama-3.3-70b-versatile",temperature =0.9,max_tokens=500)
+    # ---------------- GROQ API KEY ----------------
+    groq_api_key = (
+        st.secrets.get("GROQ_API_KEY", None)
+        if hasattr(st, "secrets")
+        else None
+    ) or os.getenv("GROQ_API_KEY")
 
+    if not groq_api_key:
+        raise ValueError(
+            "GROQ_API_KEY not found. Add it to .env locally or Streamlit Secrets."
+        )
+
+    # ---------------- LLM ----------------
+    if llm is None:
+        llm = ChatGroq(
+            api_key=groq_api_key,
+            model="llama-3.3-70b-versatile",
+            temperature=0.3,
+            max_tokens=500,
+        )
+
+    # ---------------- VECTOR STORE ----------------
     if vector_store is None:
         ef = HuggingFaceEmbeddings(
-        model_name="BAAI/bge-base-en-v1.5",
-        model_kwargs={"device": "cpu"},
-        encode_kwargs={"normalize_embeddings": True}
+            model_name="BAAI/bge-base-en-v1.5",
+            model_kwargs={"device": "cpu"},
+            encode_kwargs={"normalize_embeddings": True},
         )
 
         vector_store = Chroma(
-        collection_name="real_estate",
-        embedding_function=ef,
-        persist_directory=str(VECTORSTORE_DIR)
+            collection_name="real_estate",
+            embedding_function=ef,
+            persist_directory=str(VECTORSTORE_DIR),
         )
-
 
 # In[26]:
 
