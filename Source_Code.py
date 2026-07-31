@@ -77,7 +77,7 @@ def process_all_pdfs(uploaded_files):
 
     yield "Initialisings compoments (LLM & Vector Store)"
 
-    initialise_componets()
+    initialise_components()
 
     vector_store.reset_collection()
 
